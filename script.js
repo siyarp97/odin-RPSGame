@@ -1,65 +1,164 @@
 let playerScore = 0
 let computerScore = 0
-let keepMovin = true
+let computerChoice = ''
+let playerSelection = ''
 
-function getComputerChoice(){
-    choices = ['Rock', 'Paper', 'Scissors']
-    let choicePoint = Math.round(Math.random() * ((choices.length)-1))
-    let computerChoice = choices[choicePoint]
-    console.log(computerChoice)
-    return computerChoice
+// Generated Html Elements
+const wrapper = document.querySelector('#wrapper')
+const p = document.createElement('p')
+
+
+// For Score Display
+const pScoreDisplay = document.createElement('p')
+const cScoreDisplay = document.createElement('p')
+
+pScoreDisplay.innerHTML = `Player Score : ${playerScore}`
+cScoreDisplay.innerHTML = `Computer Score : ${computerScore}`
+
+
+
+// Selections
+const rock = document.createElement('button')
+rock.innerText = 'Rock'
+const paper = document.createElement('button')
+paper.innerText = 'Paper'
+const scissors = document.createElement('button')
+scissors.innerText = 'Scissors'
+
+
+// Wrapper Appends
+wrapper.appendChild(rock)
+wrapper.appendChild(paper)
+wrapper.appendChild(scissors)
+wrapper.appendChild(p)
+wrapper.appendChild(cScoreDisplay)
+wrapper.appendChild(pScoreDisplay)
+
+
+// Click Evnts
+rock.addEventListener('click', () => {
+    playerSelection = 'rock'
+    playRound()
+    endGame()
+
+})
+paper.addEventListener('click', () => {
+    playerSelection = 'paper'
+    playRound()
+    endGame()
+
+})
+scissors.addEventListener('click', () => {
+    playerSelection = 'scissors'
+    playRound()
+    endGame()
+
+})
+
+
+
+
+
+//* Functions
+
+function computerChoiceFunction() {
+    const choices = ['rock', 'paper', 'scissors']
+    random = Math.round(Math.random() * (choices.length - 1))
+    computerChoice = choices[random]
+
 }
 
-function playRound(playerSelection,computerSelection=getComputerChoice()){
 
-    playerSelection = prompt('Rock? Paper? Scissors?')
-    
-    let playerLow = playerSelection.toLowerCase()
-    let gramWord = playerLow.replace(playerLow[0], playerLow[0].toUpperCase())
+function playRound() {
 
-    let computerLow = computerSelection.toLowerCase()
-    
+    computerChoiceFunction()
 
-            if( ((playerLow == 'rock') && (computerLow == 'scissors')) ||
-            ((playerLow == 'paper') && (computerLow == 'rock')) ||
-            (playerLow == 'scissors') && (computerLow == 'paper'))
-            {
-                playerScore++
-                console.log('Player Score: '+playerScore, 'Computer Score: '+computerScore)
-                return console.log(`You win! ${gramWord} beats ${computerSelection}`)
-            }
 
-            else if( ((playerLow == 'rock') && (computerLow == 'paper')) ||
-            ((playerLow == 'paper') && (computerLow == 'scissors')) ||
-            (playerLow == 'scissors') && (computerLow == 'rock'))
-            {
-                computerScore++
-                console.log('Player Score: '+playerScore, 'Computer Score: '+computerScore)
-                return console.log(`You Lose! ${computerLow} beats ${gramWord}`)
-            }
+    if (computerChoice == playerSelection) {
 
-            else
-            {
-                return console.log(`A tie! ${computerLow} and ${gramWord}`)
-            }
+        p.innerText = "Equals"
+
+    }
+    else if (playerSelection == 'rock' && computerChoice == 'scissors' || playerSelection == 'paper' && computerChoice == 'rock' || playerSelection == 'scissors' && computerChoice == 'paper') {
+
+       
+        const PgramWord = playerSelection.replace(playerSelection[0],playerSelection[0].toUpperCase())
+        const CgramWord = computerChoice.replace(computerChoice[0], computerChoice[0].toUpperCase())
+
+        p.innerText = `${PgramWord} beats ${CgramWord} Player Wins!`
+
+        playerScore++
+
+        pScoreDisplay.innerHTML = `Player Score : ${playerScore}`
+        // cScoreDisplay.innerHTML = `Computer Score : ${computerScore}`
+
+    }
+
+    else {
+        const PgramWord = playerSelection.replace(playerSelection[0],playerSelection[0].toUpperCase())
+        const CgramWord = computerChoice.replace(computerChoice[0], computerChoice[0].toUpperCase())
+
+        p.innerText = `${CgramWord} beats ${PgramWord} Computer Wins!`
+
+        computerScore++
+
+        cScoreDisplay.innerHTML = `Computer Score : ${computerScore}`
+    }
 
 }
 
-function game(){
-    while (keepMovin) {
-        playRound()
-        if(playerScore == 5 ){
-            console.log('Winner Player')
-            keepMovin = false
-        }
-        else if(computerScore == 5 ){
-            console.log('Winner Computer')
-            keepMovin = false
-        }
-        else{
-            keepMovin=true
-        }
-    }   
+function endGame() {
+    if (playerScore == 5) {
+        pScoreDisplay.setAttribute('style', 'display:none;')
+        cScoreDisplay.setAttribute('style', 'display:none;')
+        rock.setAttribute('style', 'display:none;')
+        paper.setAttribute('style', 'display:none;')
+        scissors.setAttribute('style', 'display:none;')
+        p.innerText = 'Game Over, Player Wins!'
+
+        const tryAgainBtn = document.createElement('button')
+        tryAgainBtn.innerHTML = 'Try Again?'
+        wrapper.append(tryAgainBtn)
+        tryAgainBtn.addEventListener('click', () => {
+            restartGame()
+            tryAgainBtn.setAttribute('style', 'display:none')
+        })
+
+
+    }
+    else if (computerScore == 5) {
+        pScoreDisplay.setAttribute('style', 'display:none;')
+        cScoreDisplay.setAttribute('style', 'display:none;')
+        rock.setAttribute('style', 'display:none;')
+        paper.setAttribute('style', 'display:none;')
+        scissors.setAttribute('style', 'display:none;')
+        p.innerText = 'Game Over, Computer Wins!'
+
+        const tryAgainBtn = document.createElement('button')
+        tryAgainBtn.innerHTML = 'Try Again?'
+        wrapper.append(tryAgainBtn)
+        tryAgainBtn.addEventListener('click', () => {
+            restartGame()
+            tryAgainBtn.setAttribute('style', 'display:none')
+        })
+    }
 }
 
-game()
+function restartGame() {
+    // playerScore = 0
+    // pScoreDisplay.innerHTML = `Player Score : ${playerScore}`
+    // computerScore = 0
+    // cScoreDisplay.innerHTML = `Computer Score : ${computerScore}`
+    // computerChoice = ''
+    // playerSelection = ''
+    // p.innerText = ''
+    // pScoreDisplay.setAttribute('style', 'display:static;')
+    // cScoreDisplay.setAttribute('style', 'display:static;')
+    // rock.setAttribute('style', 'display:static;')
+    // paper.setAttribute('style', 'display:static;')
+    // scissors.setAttribute('style', 'display:static;')
+   return window.location.reload()
+}
+
+
+
